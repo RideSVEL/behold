@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="blocks/head :: head"></div>
+
+<body>
+<div th:insert="blocks/header :: header"></div>
+<main role="main" class="container">
+    <div class="jumbotron">
+        <h1></h1>
+        <div th:if="${id}"><h1 th:text="'Review from - ' + ${id}"></h1></div>
+        <h1></h1>
+        <div th:if="${user.userName}"><h1 th:text="'With name - ' + ${user.userName}"></h1></div>
+        <h1></h1>
+        <div th:if="${user.lastName}"><h1 th:text="'With lastname - ' + ${user.lastName}"></h1></div>
+        <label for="message">Review: </label>
+        <p id="message" th:text="${review.review}"></p>
+        <p id="date" th:text="${review.date}"></p>
+    </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</body>
+</html>

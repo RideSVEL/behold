@@ -1,9 +1,9 @@
 package serejka.telegram.behold.logic.enums;
 
-public enum CallbackCommands {
+public enum CallbackCommands  {
 
   MOVIE("movie"), BOOKMARK("bookmark"), OTHER("other"),
-  DELETE_BOOKMARK("deleteBookmark");
+  DELETE_BOOKMARK("deleteBookmark"), LIKED("liked"), UNLIKED("unliked");
 
   private final String value;
 

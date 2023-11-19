@@ -89,22 +89,42 @@ public class KeyboardService {
     return sendMessage;
   }
 
-  public InlineKeyboardMarkup getInlineMessageButtonForFilm(Long movie_id, Long userId) {
-    InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-    InlineKeyboardButton button;
-    List<InlineKeyboardButton> keyboardButtons = new ArrayList<>();
-    button = new InlineKeyboardButton();
-    if (bookmarkService.checkExistBookmark(userId, movie_id).isEmpty()) {
-      button.setText("Добавить в закладки✅");
-      button.setCallbackData(CallbackCommands.BOOKMARK.getValue() + "=" + movie_id);
+  public InlineKeyboardMarkup getInlineMessageButtonForFilm(Long movieId, Long userId) {
+    return InlineKeyboardMarkup.builder()
+        .keyboardRow(List.of(createBookmarkButton(movieId, userId)))
+        .keyboardRow(List.of(createLikedButton(movieId, userId), createUnlikedButton(movieId, userId)))
+        .build();
+  }
+
+  private InlineKeyboardButton createBookmarkButton(Long movieId, Long userId) {
+    String text;
+    String callback;
+
+    if (bookmarkService.checkExistBookmark(userId, movieId).isEmpty()) {
+      text = "Додати до закладок✅";
+      callback = CallbackCommands.BOOKMARK.getValue() + "=" + movieId;
     } else {
-      button.setText("Удалить из закладок❌");
-      button.setCallbackData(CallbackCommands.DELETE_BOOKMARK.getValue() + "=" + movie_id);
+      text = "Видалити з закладок❌";
+      callback = CallbackCommands.DELETE_BOOKMARK.getValue() + "=" + movieId;
     }
-    keyboardButtons.add(button);
-    List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-    rowList.add(keyboardButtons);
-    inlineKeyboardMarkup.setKeyboard(rowList);
-    return inlineKeyboardMarkup;
+
+    return InlineKeyboardButton.builder()
+        .text(text)
+        .callbackData(callback)
+        .build();
+  }
+
+  public InlineKeyboardButton createLikedButton(Long movieId, Long userId) {
+   return InlineKeyboardButton.builder()
+       .text("Подобається\uD83D\uDE0D")
+       .callbackData(CallbackCommands.LIKED.getValue() + "=" + movieId)
+       .build();
+  }
+
+  public InlineKeyboardButton createUnlikedButton(Long movieId, Long userId) {
+    return InlineKeyboardButton.builder()
+        .text("Не раджу❌")
+        .callbackData(CallbackCommands.UNLIKED.getValue() + "=" + movieId)
+        .build();
   }
 }

@@ -64,7 +64,7 @@ public class ReviewService {
 
   public SendMessage reviewLogic(Message message) {
     if (message.getText().equals("/cancel")
-        || message.getText().equals("Вернуться\uD83D\uDE15")) {
+        || message.getText().equals("Повернутись\uD83D\uDE15")) {
       userDataCache.deleteStateUser(message.getFrom().getId());
       return keyboardService.getKeyboard(message.getChatId(),
           "Увидимся в следующий раз\uD83D\uDE0A", Commands.START);

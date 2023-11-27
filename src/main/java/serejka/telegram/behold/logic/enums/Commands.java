@@ -12,7 +12,9 @@ public enum Commands {
   OTHER("other"), REVIEW("/review", KeyboardCommands.REVIEW.getValue()), CANCEL("/cancel",
       KeyboardCommands.CANCEL.getValue()),
   SEARCH("/search", KeyboardCommands.SEARCH.getValue()), RANDOM("/random", KeyboardCommands.RANDOM.getValue()),
-  BOOKMARKS("/bookmarks", KeyboardCommands.BOOKMARKS.getValue()), DESCRIPTION("/description", KeyboardCommands.DESCRIPTION.getValue());
+  BOOKMARKS("/bookmarks", KeyboardCommands.BOOKMARKS.getValue()),
+  DESCRIPTION("/description", KeyboardCommands.DESCRIPTION.getValue()),
+  PERSONAL_LIST("/personal", KeyboardCommands.PERSONAL_LIST.getValue());
 
   Commands(String... commands) {
     this.commandNames = new HashSet<>(Arrays.asList(commands));

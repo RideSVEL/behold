@@ -44,8 +44,8 @@ public class DescriptionFilmState implements StateCommand {
     return aiService.getMovieResponse(message.getText())
         .map(this::getRequiredFilm)
         .flatMap(inner -> inner)
-        .map(mov -> replyMovieByid(message, mov))
-        .orElse(replyMovieByid(message, new Movie()));
+        .map(mov -> replyMovieById(message, mov))
+        .orElse(replyMovieById(message, new Movie()));
   }
 
   private SendMessage returnCancel(Message message) {
@@ -56,7 +56,7 @@ public class DescriptionFilmState implements StateCommand {
 
   private boolean isCancel(Message message) {
     return message.getText().equals("/cancel")
-        || message.getText().equals("Вернуться\uD83D\uDE15");
+        || message.getText().equals("Повернутись\uD83D\uDE15");
   }
 
   @NotNull
@@ -65,7 +65,7 @@ public class DescriptionFilmState implements StateCommand {
         .stream().findFirst();
   }
 
-  private SendMessage replyMovieByid(Message message, Movie movie) {
+  private SendMessage replyMovieById(Message message, Movie movie) {
     String reply = replyToUserService.replyMovie(message.getChatId(), String.valueOf(movie.getId()));
     if (reply.equals("Что-то не получилось найти такой фильм...")) {
       return sendMsg.sendMsg(message.getChatId(), reply);

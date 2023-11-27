@@ -48,7 +48,7 @@ public class MovieService {
 
   public SendMessage searchLogic(String movieName, Long chatId) {
     if (movieName.equals("/cancel")
-        || movieName.equals("Вернуться\uD83D\uDE15")) {
+        || movieName.equals("Повернутись\uD83D\uDE15")) {
       userDataCache.deleteStateUser(chatId);
       return keyboardService.getKeyboard(chatId,
           "Увидимся в следующий раз\uD83D\uDE0A", Commands.START);
@@ -72,15 +72,6 @@ public class MovieService {
     String reply = replyService.replyListMovies(movies, Commands.SEARCH);
     return sendMsg.sendMsg(chatId, reply, getInlineMessageButtons(movies, false));
   }
-
-//  public SendMessage sendListMoviesSearch(Message message) {
-//    List<Movie> movies;
-//    movies = parserService.getListMoviesBySearch(message.getText());
-//    movies.sort(((o1, o2) -> -1 * Float.compare(o1.getVoteAverage(), o2.getVoteAverage())));
-//    movies.sort(((o1, o2) -> -1 * o1.getVotes() - o2.getVotes()));
-//    String reply = replyService.replyListMovies(movies, Commands.SEARCH);
-//    return sendMsg.sendMsg(message.getChatId(), reply, getInlineMessageButtons(movies, false));
-//  }
 
   public InlineKeyboardMarkup getInlineMessageButtons(List<Movie> list, boolean bookmarks) {
     InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();

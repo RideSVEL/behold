@@ -42,32 +42,32 @@ public class ReplyToUserService {
 
   public String replyStart(Message message) {
     userService.checkAndSave(message);
-    return "Привет, " + message.getFrom().getFirstName()
-        + "!\nТы попал в лучший бот по подбору фильмов :)" +
-        "\nВсе необходимые функции ты сможешь найти на клавиатуре снизу" +
-        "\nЕсли возникут вопросы, используй клавишу \"Помощь\", либо отправь команду /help" +
-        "\nУдачки! \uD83D\uDE1C";
+    return "Привіт, " + message.getFrom().getFirstName()
+        + "!\nТи потрапив у найкращий бот з підбору фільмів :)" +
+        "\nУсі необхідні функції ти зможеш знайти на клавіатурі знизу" +
+        "\nЯкщо виникнуть питання, використовуй клавішу \"Допомога\", або надішліть команду /help" +
+        "\nУспіхів! \uD83D\uDE1C";
   }
 
   public String replyReview() {
-    return "Я рад, что ты решил оставить отзыв о нашем боте," +
-        " отправь свои пожелания\uD83D\uDE0C" +
-        "\nЛибо можешь отменить операцию командой - /cancel\uD83D\uDE15";
+    return "Я радий, що ти вирішив залишити відгук про наш бот," +
+        " надішліть свої побажання\uD83D\uDE0C" +
+        "\nАбо можеш скасувати операцію командою - /cancel\uD83D\uDE15";
   }
 
   public String replySearch() {
-    return "Давай найдем нужный тебе фильм\uD83D\uDE09" +
-        "\nПиши название, либо можешь отменить операцию нажав соответствующую клавишу на клавиаутре)";
+    return "Давай знайдемо потрібний тобі фільм\uD83D\uDE09" +
+        "\nПиши назву, або можеш скасувати операцію, натиснувши відповідну клавішу на клавіаутрі)";
   }
 
   public String replyDescription() {
-    return "Я помогу тебе найти фильм по твоему описанию\uD83D\uDE0B" +
-        "\nПостарайся полноценно описать необходимый фильм с мелкими известными деталями. " +
-        "\nЛибо можешь отменить операцию нажав соответствующую клавишу на клавиаутре)";
+    return "Я допоможу тобі знайти фільм за твоїм описом\uD83D\uDE0B" +
+        "\nПостарайся повноцінно описати необхідний фільм із дрібними відомими деталями. " +
+        "\nАбо можеш скасувати операцію, натиснувши відповідну клавішу на клавіаутрі)";
   }
 
   public String replyError() {
-    return "Что-то не так, извини\uD83D\uDE1E\nДавай пользоваться кнопками☺️";
+    return "Щось не так, вибач\uD83D\uDE1E\nДавай користуватися кнопками☺️";
   }
 
   public String replyListMovies(List<Movie> movies, Commands commands) {
@@ -77,15 +77,17 @@ public class ReplyToUserService {
       log.info("Get movie: {}", movies);
       StringBuilder sb = new StringBuilder();
       switch (commands) {
-        case TOPDAY -> sb.append("<em>Популярные фильмы на сегодня:</em>");
-        case TOPWEEK -> sb.append("<em>Лучшее за неделю:</em>");
-        case TOP -> sb.append("<em>Пользуются спросом большой промежуток времени:</em>");
-        case SEARCH -> sb.append("Если результаты отсутствуют или не удовлетворяют поиски, повтори ввод\uD83D\uDE09" +
-            "\nТакже можешь отменить операцию, нажав клавишу на клавиатуре" +
-            "\n\n<em>Нашлось:</em>");
+        case TOPDAY -> sb.append("<em>Популярні фільми на сьогодні:</em>");
+        case PERSONAL_LIST -> sb.append("<em>Фільми підібрані за твоїми персональними вподобаннями:</em>\n" +
+            "Якщо ти бажаєш отримати інший список, просто скористуйся командою ще раз, і ми з помічником підберемо тобі нових за твоїми інтересами)");
+        case TOPWEEK -> sb.append("<em>Найкраще за тиждень:</em>");
+        case TOP -> sb.append("<em>Користуються попитом великий проміжок часу:</em>");
+        case SEARCH -> sb.append("Якщо результати відсутні або не задовольняють пошуки, повтори введення\uD83D\uDE09" +
+            "\nТакож можеш скасувати операцію, натиснувши клавішу на клавіатурі" +
+            "\n\n<em>Знайшлося:</em>");
         case BOOKMARKS -> sb.append("<em>Ваши закладки</em>\uD83D\uDCBC" +
-            "\nДля удаления фильма из закладок, воспользуйся соответствующей клавишей" +
-            "\n\n<em>Нашлось:</em>");
+            "\nДля видалення фільму із закладок, скористайся відповідною клавішею" +
+            "\n\n<em>Знайшлося:</em>");
       }
       for (int i = 0; i < Math.min(movies.size(), 5); i++) {
         Movie movie = movies.get(i);
@@ -97,7 +99,7 @@ public class ReplyToUserService {
         }
         sb.delete(sb.length() - 2, sb.length() - 1);
       }
-      sb.append("\n\nДля получения подробностей фильма воспользуйся одной из кнопок ниже:");
+      sb.append("\n\nДля отримання подробиць фільму скористайтесь однією з кнопок нижче:");
       return sb.toString();
     }
     return reply;
@@ -111,13 +113,13 @@ public class ReplyToUserService {
 
   public String senWaiting(Message message) {
     superBot.sendChatActionUpdate(message.getChatId(), ActionType.TYPING);
-    return "Несколько секундочек ожидания) Подбираем фильм...";
+    return "Кілька секунд очікування) Підбираємо фільм...";
   }
 
   public String replyMovie(long chatId, String filmId) {
     String reply;
     try {
-      reply = "Что-то не получилось найти такой фильм...";
+      reply = "Щось не вдалося знайти такий фільм...";
       Movie movie = parserService.parseMovie(Integer.parseInt(filmId));
       if (movie != null) {
         superBot.sendChatActionUpdate(chatId, ActionType.UPLOADPHOTO);
@@ -134,7 +136,7 @@ public class ReplyToUserService {
         reply = showMovie(movie);
       }
     } catch (NumberFormatException e) {
-      reply = "Что-то не получилось найти такой фильм...";
+      reply = "Щось не вдалося знайти такий фільм...";
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -144,22 +146,22 @@ public class ReplyToUserService {
   private String showMovie(Movie movie) {
     StringBuilder sb = new StringBuilder("<b><u>"
         + movie.getTitle() + " (" + movie.getYear() + ")" + "</u></b>\n\n");
-    sb.append("Страна: ");
+    sb.append("Країна: ");
     for (String s : movie.getCountry()) {
       sb.append(s).append(", ");
     }
     sb.delete(sb.length() - 2, sb.length() - 1);
-    sb.append("\n<em>Оценка: ").append(movie.getVoteAverage()).append(" (")
+    sb.append("\n<em>Оцінка: ").append(movie.getVoteAverage()).append(" (")
         .append(movie.getVotes()).append(")</em>");
     sb.append("\nЖанр: ");
     for (String s : movie.getGenres()) {
       sb.append(s).append(", ");
     }
     sb.delete(sb.length() - 2, sb.length() - 1);
-    sb.append("\nПремьера: ").append(movie.getReleaseDate());
+    sb.append("\nПрем'єра: ").append(movie.getReleaseDate());
     sb.append("\nБюджет: ").append(movie.getBudget()).append("$");
-    sb.append("\nПродолжительность: ").append(movie.getRuntime()).append(" мин.");
-    sb.append("\nОригинальное навание: ").append(movie.getOriginalTitle());
+    sb.append("\nТривалість: ").append(movie.getRuntime()).append(" мин.");
+    sb.append("\nОригінальна назва: ").append(movie.getOriginalTitle());
     sb.append("\n\n").append(movie.getOverview());
     return sb.toString();
   }

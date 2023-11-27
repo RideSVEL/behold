@@ -27,9 +27,9 @@ public class BookmarkService {
     if (bookmark.isEmpty()) {
       User userByUserId = userService.findUserByUserId(userId);
       bookmarkRepository.save(new Bookmark(userByUserId, movieId));
-      return "Фильм был успешно добавлен в закладки\uD83D\uDE4C";
+      return "Фільм був успішно доданий до закладок\uD83D\uDE4C";
     } else {
-      return "Этот фильм уже находится в ваших закладках\uD83D\uDE45\u200D♂️";
+      return "Цей фільм вже знаходиться у ваших закладках\uD83D\uDE45\u200D♂️";
     }
   }
 
@@ -37,9 +37,9 @@ public class BookmarkService {
     Optional<Bookmark> bookmark = checkExistBookmark(userId, movieId);
     if (bookmark.isPresent()) {
       bookmarkRepository.delete(bookmark.get());
-      return "Фильм был удален из закладок❌";
+      return "Фільм був видалений із закладок❌";
     } else {
-      return "Этот фильм отсутствует в ваших закладках\uD83D\uDE45\u200D♂️";
+      return "Цей фільм відсутній у закладках\uD83D\uDE45\u200D♂️";
     }
   }
 

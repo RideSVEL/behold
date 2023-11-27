@@ -19,6 +19,7 @@ import serejka.telegram.behold.cache.UserDataCache;
 import serejka.telegram.behold.logic.enums.BotState;
 import serejka.telegram.behold.logic.enums.CallbackCommands;
 import serejka.telegram.behold.logic.enums.Commands;
+import serejka.telegram.behold.service.AuditService;
 
 @Slf4j
 @Service
@@ -30,12 +31,13 @@ public class CommandsRealer {
   Map<CallbackCommands, CallbackCommand> callbackCommandMap;
   Map<BotState, StateCommand> stateCommandMap;
   UserDataCache userDataCache;
+  AuditService auditService;
 
   @Autowired
   public CommandsRealer(
       List<MessageCommand> messageCommands,
       List<CallbackCommand> callbackCommands,
-      List<StateCommand> stateCommands, UserDataCache userDataCache) {
+      List<StateCommand> stateCommands, UserDataCache userDataCache, AuditService auditService) {
     messageCommandMap = messageCommands.stream()
         .collect(toMap(MessageCommand::getMyCommand, Function.identity()));
     callbackCommandMap = callbackCommands.stream()
@@ -43,6 +45,7 @@ public class CommandsRealer {
     stateCommandMap = stateCommands.stream()
         .collect(toMap(StateCommand::getMyCommand, Function.identity()));
     this.userDataCache = userDataCache;
+    this.auditService = auditService;
   }
 
   public SendMessage answerOnUpdate(Message message) {
@@ -60,6 +63,7 @@ public class CommandsRealer {
       log.error("Command not found - " + command);
       callbackCommand = callbackCommandMap.get(CallbackCommands.OTHER);
     }
+    auditService.auditAction(callbackQuery.getFrom().getId(), Long.parseLong(data[1]), command.name());
     return callbackCommand.generateMessage(callbackQuery, data[1]);
   }
 

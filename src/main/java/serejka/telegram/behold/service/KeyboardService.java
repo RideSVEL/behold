@@ -1,7 +1,10 @@
 package serejka.telegram.behold.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +27,13 @@ import serejka.telegram.behold.logic.enums.KeyboardCommands;
 @Service
 public class KeyboardService {
 
+  private static final Set<Commands> COMMANDS_WITH_CANCEL = Collections.unmodifiableSet(
+      EnumSet.of(Commands.REVIEW, Commands.SEARCH, Commands.DESCRIPTION));
+
   BookmarkService bookmarkService;
 
   public SendMessage getKeyboard(long chatId, String text, Commands command) {
-    return command.equals(Commands.REVIEW) || command.equals(Commands.SEARCH)
+    return COMMANDS_WITH_CANCEL.contains(command)
         ? sendKeyboardWithMessage(chatId, text, createReturnKeyboard())
         : sendKeyboardWithMessage(chatId, text, createMainKeyboard());
   }
@@ -36,7 +42,7 @@ public class KeyboardService {
     ReplyKeyboardMarkup replyKeyboardMarkup = createReplyMarkup();
     List<KeyboardRow> keyboard = new ArrayList<>();
     KeyboardRow row1 = new KeyboardRow();
-    row1.add(new KeyboardButton("Вернуться\uD83D\uDE15"));
+    row1.add(new KeyboardButton("Повернутись\uD83D\uDE15"));
     keyboard.add(row1);
     replyKeyboardMarkup.setKeyboard(keyboard);
     return replyKeyboardMarkup;
@@ -67,11 +73,13 @@ public class KeyboardService {
     row4.add(new KeyboardButton(KeyboardCommands.REVIEW.getValue()));
     KeyboardRow row5 = new KeyboardRow();
     row5.add(new KeyboardButton(KeyboardCommands.DESCRIPTION.getValue()));
+    row5.add(new KeyboardButton(KeyboardCommands.PERSONAL_LIST.getValue()));
     keyboard.add(row1);
     keyboard.add(row2);
+    keyboard.add(row5);
     keyboard.add(row3);
     keyboard.add(row4);
-    keyboard.add(row5);
+
     replyKeyboardMarkup.setKeyboard(keyboard);
     return replyKeyboardMarkup;
   }
